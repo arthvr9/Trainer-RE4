@@ -1,14 +1,22 @@
 #include <iostream>
 #include <windows.h>
 #include <psapi.h>
+#include "process.h"
 
 int main()
 {
-	// may variate
-	// TODO: set dynamic
-	const int PID = 17928;
+	Process proc;
+	const int PID = proc.GetProcessId(L"bio4.exe");
+
+	if (PID == 0) {
+		printf("processo não encontrado");
+		exit(1);
+	}
+	printf("%d", PID);
+
 	DWORD ammo = 0x08EB7574;
 	int valor = 15728640;
+	
 
 	// dinheiro: 00FFDF708
 
