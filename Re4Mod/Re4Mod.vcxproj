@@ -127,11 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="mods\InfiniteAmmo.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="process.cpp" />
+    <ClCompile Include="memory\Memory.cpp" />
+    <ClCompile Include="process\Process.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="process.h" />
+    <ClInclude Include="mods\InfiniteAmmo.h" />
+    <ClInclude Include="memory\Memory.h" />
+    <ClInclude Include="process\Process.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
