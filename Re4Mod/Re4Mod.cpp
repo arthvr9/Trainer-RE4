@@ -5,6 +5,7 @@
 int main()
 {
 	// may variate
+	// TODO: set dynamic
 	const int PID = 17928;
 	DWORD ammo = 0x08EB7574;
 	int valor = 15728640;
