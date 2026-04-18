@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Re4Mod/Re4Mod.vcxproj" Id="e4415bf5-d968-4f6f-b2ef-a533c26ba4e7" />
+</Solution>
