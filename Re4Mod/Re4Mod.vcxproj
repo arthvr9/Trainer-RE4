@@ -146,6 +146,7 @@
     <ClCompile Include="external\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="external\imgui\imgui_tables.cpp" />
     <ClCompile Include="external\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\mods\InfiniteMoney.cpp" />
     <ClCompile Include="src\mods\InfiniteAmmo.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\memory\Memory.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="external\imgui\imstb_rectpack.h" />
     <ClInclude Include="external\imgui\imstb_textedit.h" />
     <ClInclude Include="external\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\mods\InfiniteMoney.h" />
     <ClInclude Include="src\mods\InfiniteAmmo.h" />
     <ClInclude Include="src\memory\Memory.h" />
     <ClInclude Include="src\process\Process.h" />

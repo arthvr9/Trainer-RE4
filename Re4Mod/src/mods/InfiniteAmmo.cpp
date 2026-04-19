@@ -6,11 +6,16 @@ InfiniteAmmo::InfiniteAmmo(uintptr_t baseAddr, Memory* mem) {
 }
 
 void InfiniteAmmo::Update() {
+    if (base == 0)
+		return;
+
 	uintptr_t secondPos = base + 0x00870FE8;
 
-	uintptr_t thirdPos = memory->Read<uintptr_t>(secondPos);
+    DWORD thirdPos = memory->Read<DWORD>(secondPos);
+	if (thirdPos == 0)
+		return;
 
-	uintptr_t finalAddr = thirdPos + 0x1D4;
+    uintptr_t finalAddr = static_cast<uintptr_t>(thirdPos) + 0x1D4;
 
 	int value = 15728640; // 30 bullets
 

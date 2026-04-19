@@ -7,6 +7,7 @@
 #include "process/Process.h"
 #include "memory/Memory.h"
 #include "mods/InfiniteAmmo.h"
+#include "mods/InfiniteMoney.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_dx9.h>
@@ -109,12 +110,17 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmd_show)
 
     Memory mem(proc.handle);
     InfiniteAmmo ammo(base, &mem);
+    InfiniteMoney money;
 
     bool infiniteAmmo = true;
+    bool infiniteMoney = true;
     bool menuOpen = true;
 
     MSG msg{};
     bool running = true;
+
+    float menuAlpha = 0.0f;
+    float menuScale = 0.8f;
 
     while (running)
     {
@@ -126,6 +132,24 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmd_show)
             if (msg.message == WM_QUIT)
                 running = false;
         }
+
+        float speed = 10.0f * ImGui::GetIO().DeltaTime;
+
+        if (menuOpen) {
+            menuAlpha += speed;
+            menuScale += speed;
+        }
+        else {
+            menuAlpha -= speed;
+            menuScale -= speed;
+        }
+
+        // clamp
+        if (menuAlpha > 1.0f) menuAlpha = 1.0f;
+        if (menuAlpha < 0.0f) menuAlpha = 0.0f;
+
+        if (menuScale > 1.0f) menuScale = 1.0f;
+        if (menuScale < 0.8f) menuScale = 0.8f;
 
         if (GetAsyncKeyState(VK_INSERT) & 1)
         {
@@ -149,11 +173,37 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmd_show)
         ImGui::NewFrame();
         ImGui::GetIO().MouseDrawCursor = menuOpen;
 
-        ImGui::Begin("RE4 Trainer");
+        ImGuiIO& io = ImGui::GetIO();
 
-        ImGui::Checkbox("Infinite TMP Ammo", &infiniteAmmo);
+        ImVec2 center = ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f);
 
-        ImGui::End();
+        ImGui::SetNextWindowSize(ImVec2(400, 250), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(center, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+
+        ImGui::SetNextWindowBgAlpha(menuAlpha);
+
+        ImVec2 baseSize = ImVec2(400, 250);
+        ImVec2 scaledSize = ImVec2(baseSize.x * menuScale, baseSize.y * menuScale);
+
+        ImGui::SetNextWindowSize(scaledSize, ImGuiCond_Always);
+        ImGui::SetNextWindowPos(center, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, menuAlpha);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 10.0f);
+
+        if (menuAlpha > 0.01f)
+        {
+            ImGui::Begin("RE4 Trainer", nullptr,
+                ImGuiWindowFlags_NoResize |
+                ImGuiWindowFlags_NoCollapse);
+
+            ImGui::Checkbox("Infinite TMP Ammo", &infiniteAmmo);
+			ImGui::Checkbox("Infinite Money", &infiniteMoney);
+
+            ImGui::End();
+        }
+
+        ImGui::PopStyleVar(2);
 
         ImGui::EndFrame();
 
@@ -170,6 +220,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmd_show)
 
         if (infiniteAmmo)
             ammo.Update();
+
+        if (infiniteMoney)
+            money.Update(proc.handle);
     }
 
     ImGui_ImplDX9_Shutdown();

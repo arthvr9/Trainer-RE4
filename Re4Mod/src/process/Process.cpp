@@ -35,13 +35,22 @@ DWORD Process::GetProcessId(const wchar_t* processName) {
 }
 
 uintptr_t Process::GetModuleBase(const wchar_t* moduleName) {
-	HMODULE module;
-	DWORD needed;
+ HMODULE modules[1024];
+	DWORD needed = 0;
 
-	if (EnumProcessModules(handle, &module, sizeof(module), &needed)) {
-		MODULEINFO info;
-		if (GetModuleInformation(handle, module, &info, sizeof(info))) {
-			return (uintptr_t)info.lpBaseOfDll;
+	if (EnumProcessModules(handle, modules, sizeof(modules), &needed)) {
+		const DWORD count = needed / sizeof(HMODULE);
+		for (DWORD i = 0; i < count; ++i) {
+			wchar_t name[MAX_PATH]{};
+			if (GetModuleBaseNameW(handle, modules[i], name, MAX_PATH) == 0)
+				continue;
+
+			if (_wcsicmp(name, moduleName) == 0) {
+				MODULEINFO info{};
+				if (GetModuleInformation(handle, modules[i], &info, sizeof(info))) {
+					return (uintptr_t)info.lpBaseOfDll;
+				}
+			}
 		}
 	}
 
