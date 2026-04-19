@@ -110,7 +110,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmd_show)
 
     Memory mem(proc.handle);
     InfiniteAmmo ammo(base, &mem);
-    InfiniteMoney money;
+    InfiniteMoney money(base, &mem);
 
     bool infiniteAmmo = true;
     bool infiniteMoney = true;
@@ -197,7 +197,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmd_show)
                 ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoCollapse);
 
-            ImGui::Checkbox("Infinite TMP Ammo", &infiniteAmmo);
+            ImGui::Checkbox("Infinite Ammo", &infiniteAmmo);
 			ImGui::Checkbox("Infinite Money", &infiniteMoney);
 
             ImGui::End();
@@ -222,7 +222,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmd_show)
             ammo.Update();
 
         if (infiniteMoney)
-            money.Update(proc.handle);
+            money.Update();
     }
 
     ImGui_ImplDX9_Shutdown();

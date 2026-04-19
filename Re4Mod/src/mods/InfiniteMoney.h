@@ -1,11 +1,15 @@
 #pragma once
+#include <iostream>
 #include <Windows.h>
+#include "../memory/Memory.h"
 
-class InfiniteMoney
-{
-	DWORD money_addr = 0x00FEF708; // TODO: find if this address is static or if it needs to be calculated
+class InfiniteMoney {
+	private:
+		uintptr_t base;
+		Memory* memory;
 
 	public:
-		void Update(HANDLE hProcess);
+		InfiniteMoney(uintptr_t baseAddr, Memory* mem);
+		void Update();
 };
 
